@@ -1,0 +1,130 @@
+/* Login/Register START */
+#loginform {
+    width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  #loginform input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: #333;
+    outline: none;
+    transition: all 0.3s;
+  }
+  
+  #loginform input:focus {
+    border-color: #0066CC;;
+    box-shadow: 0 0 5px rgba(97, 218, 251, 0.6);
+  }
+  
+  #loginform button {
+    display: block;
+    width: 100%;
+    margin: 20px 0 10px;
+    padding: 14px;
+    background-color: #0066CC;;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  #loginform button:hover {
+    background-color: #21a1f1;
+    transform: scale(1.05);
+  }
+  
+  #create-account-login {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  #create-account-login:hover {
+    color: #0066CC;;
+  }
+  
+  /* Additional Styles for Register Form */
+  form#registerform {
+    width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  form#registerform input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: #333;
+    outline: none;
+    transition: all 0.3s;
+  }
+  
+  form#registerform input:focus {
+    border-color: #0066CC;;
+    box-shadow: 0 0 5px rgba(97, 218, 251, 0.6);
+  }
+  
+
+
+  form#registerform button {
+    display: block;
+    width: 100%;
+    margin: 20px 0 10px;
+    padding: 14px;
+    background-color: #0066CC;;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  form#registerform button:hover {
+    background-color: #21a1f1;
+    transform: scale(1.05);
+  }
+  
+  form#registerform #create-account-login {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  form#registerform #create-account-login:hover {
+    color: #0066CC;;
+  }
+  
