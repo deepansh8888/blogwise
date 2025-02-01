@@ -49,6 +49,9 @@ http
     if (origin === 'http://localhost:3000' || origin === 'https://blogwise-frontend.onrender.com') {
       res.setHeader("Access-Control-Allow-Origin", origin);
     }
+    else {
+      res.setHeader("Access-Control-Allow-Origin", "*"); // Or handle multiple allowed origins dynamically
+    }
     res.setHeader(
       "Access-Control-Allow-Headers",
       "Content-Type, Authorization"
