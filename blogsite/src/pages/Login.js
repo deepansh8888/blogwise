@@ -35,7 +35,7 @@ const Login = ()=> {
                 alert("Please fill in all fields");
                 return;
             }
-            const response = await fetch("http://localhost:8080/login", {
+            const response = await fetch("https://blogwise-backend.onrender.com/login", {
                 method: "POST",
                 body: JSON.stringify(userinfo),
                 headers: {
