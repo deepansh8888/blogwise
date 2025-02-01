@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 // const formidable = require("formidable");
 var http = require("http");
 // const fs = require("fs");
+const PORT = process.env.PORT || 8080;
 
 // MIDDLEWARE IMPLEMENTED
 const authenticateUser = (req, res, next) => {
@@ -314,4 +315,4 @@ http
         return;
     }
   })
-  .listen(8080);
+  .listen(PORT);
