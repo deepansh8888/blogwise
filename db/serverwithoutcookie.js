@@ -5,9 +5,9 @@ require("dotenv").config();
 const Users = require("./users");
 const Blogs = require("./blogs");
 const jwt = require("jsonwebtoken");
-const formidable = require("formidable");
+// const formidable = require("formidable");
 var http = require("http");
-const fs = require("fs");
+// const fs = require("fs");
 
 // MIDDLEWARE IMPLEMENTED
 const authenticateUser = (req, res, next) => {
