@@ -46,6 +46,7 @@ const authenticateUser = (req, res, next) => {
 // CREATE HTTP SERVER
 http
   .createServer(async (req, res) => {
+    const origin = req.headers.origin;
     if (origin === 'http://localhost:3000' || origin === 'https://blogwise-frontend.onrender.com') {
       res.setHeader("Access-Control-Allow-Origin", origin);
     }
