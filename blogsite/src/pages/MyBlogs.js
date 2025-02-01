@@ -4,7 +4,7 @@ import { convertFileToBase64 } from '../helpers/utils';
 import {ToggleContext} from '../context/myContext';
 
 const MyBlogs = ()=> {
-  const {isToggled, setIsToggled} = useContext(ToggleContext);
+  const {isToggled, setIsToggled, url} = useContext(ToggleContext);
     const location = useLocation();
     const navigate = useNavigate();
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
@@ -18,7 +18,7 @@ const MyBlogs = ()=> {
         const fetchBlogs = async () =>  {
             const username = currUserOrDraft;
             try{
-                const response = await fetch("http://localhost:8080/getmyblogs", {
+                const response = await fetch(`${url}/getmyblogs`, {
                     method: 'POST',
                     body: JSON.stringify({username: username}),
                     headers: {
@@ -52,7 +52,7 @@ const MyBlogs = ()=> {
 
     const deleteblog = async (_id, e) => {
       e.stopPropagation();
-      const response = await fetch("http://localhost:8080/deleteblog", {
+      const response = await fetch(`${url}/deleteblog`, {
         method: 'POST',
         body: JSON.stringify({_id :_id}),
         headers: {

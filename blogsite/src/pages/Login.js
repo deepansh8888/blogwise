@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../login.css';
+import { ToggleContext } from '../context/myContext';
 
 const Login = ()=> {
+    const {url} = useContext(ToggleContext);
     const navigate = useNavigate();
     const [userinfo , setUserInfo] = useState({
         username: '',
@@ -35,7 +37,7 @@ const Login = ()=> {
                 alert("Please fill in all fields");
                 return;
             }
-            const response = await fetch("https://blogwise-backend.onrender.com/login", {
+            const response = await fetch(`${url}/login`, {
                 method: "POST",
                 body: JSON.stringify(userinfo),
                 headers: {

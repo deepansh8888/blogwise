@@ -6,7 +6,7 @@ const Home = ()=> {
     // const location = useLocation();     
     const navigate = useNavigate();
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
-    const {isToggled, setIsToggled} = useContext(ToggleContext);
+    const {isToggled, setIsToggled, url} = useContext(ToggleContext);
     
     useEffect(() => {
         //useEffect doesn't accept async function directly
@@ -14,7 +14,7 @@ const Home = ()=> {
             console.log(isToggled);
             try{
                 console.log("Home.js",localStorage.getItem('token'));
-                const response = await fetch("http://localhost:8080/getallblogs", {
+                const response = await fetch(`${url}/getallblogs`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem('token')}`,

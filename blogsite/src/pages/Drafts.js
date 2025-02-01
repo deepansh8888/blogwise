@@ -3,7 +3,7 @@ import {ToggleContext} from '../context/myContext';
 import { convertFileToBase64 } from '../helpers/utils';
 
 const Drafts = ()=> {
-  const { isToggled, setIsToggled} = useContext(ToggleContext);
+  const { isToggled, setIsToggled, url} = useContext(ToggleContext);
   //this state is different from the one defined in useToggle
   const [blogData, setBlogData] = useState('');
   const [isDraftPresent, setIsDraftPresent] = useState(true);
@@ -20,7 +20,7 @@ const Drafts = ()=> {
 
   const publishBlog = async () => {
     try {
-      const response = await fetch("http://localhost:8080/createblog", {
+      const response = await fetch(`${url}/createblog`, {
         method: "POST",
         body: JSON.stringify(blogData),
         headers: {

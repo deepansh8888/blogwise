@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../login.css';
+import { ToggleContext } from '../context/myContext';
 
 const Register = ()=> {
-
+    const {url} = useContext(ToggleContext);
     const navigate = useNavigate();
     const [regData, setRegData] = useState({
         username: '',
@@ -33,7 +34,7 @@ const Register = ()=> {
         event.preventDefault();
         
         try {
-            const response = await fetch("http://localhost:8080/register", {
+            const response = await fetch(`${url}/register`, {
                 method: "POST",
                 body: JSON.stringify(regData),
                 headers: { 'Content-Type': 'application/json'

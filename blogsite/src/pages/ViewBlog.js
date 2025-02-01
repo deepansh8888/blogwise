@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
+import { ToggleContext } from '../context/myContext';
 
 const ViewBlog = () => {
+    const {url} = useContext(ToggleContext);
     const location = useLocation();
     const [fetchedBlog, setFetchedBlog] = useState();
     const [_id, setId] = useState({
@@ -17,7 +19,7 @@ const ViewBlog = () => {
     useEffect(()=>{
        const fetchBlogFunc =  async () => {
         try {
-            const response = await fetch("http://localhost:8080/getSingleBlog", {
+            const response = await fetch(`${url}/getSingleBlog`, {
                 method: 'POST',
                 body: JSON.stringify(_id),
                 headers: {

@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { ToggleContext } from '../context/myContext';
 
 const ProtectedRoute = () => {
+    const {url} = useContext(ToggleContext);
     const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const authenticateUser = async () => {
             try {
-                const response = await fetch("http://localhost:8080/authenticate", {
+                const response = await fetch(`${url}/authenticate`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

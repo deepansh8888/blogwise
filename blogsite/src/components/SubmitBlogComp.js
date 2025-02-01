@@ -4,7 +4,7 @@ import { convertFileToBase64 } from '../helpers/utils';
 
 const SubmitBlogComp = ({setIsClicked}) =>{
     const currUserOrDraftKey = localStorage.getItem('user');
-    const {isToggled, setIsToggled, draftRefresh, setDraftRefresh} = useContext(ToggleContext);
+    const {isToggled, setIsToggled, draftRefresh, setDraftRefresh, url} = useContext(ToggleContext);
     // this state is differnt from the one defined in useToggle
     const [blogData, setBlogData] = useState({
         title: '',
@@ -37,7 +37,7 @@ const SubmitBlogComp = ({setIsClicked}) =>{
     const submitBlog = async () => {
         try {
             let blogToSubmit = { ...blogData, username: currUserOrDraftKey };
-            const response = await fetch("http://localhost:8080/createblog", {
+            const response = await fetch(`${url}/submitblog`, {
                 method: 'POST',
                 body: JSON.stringify(blogToSubmit),
                 headers: {
