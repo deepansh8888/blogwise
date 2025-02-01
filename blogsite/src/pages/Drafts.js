@@ -114,7 +114,6 @@ const Drafts = ()=> {
           <div id="blogform">
             <textarea id="textAreaTitle" name="title" placeholder="Enter blog title" onChange={handleInputChange} value={blogData.title} ></textarea><br />
             <textarea id="textAreaContent" name="content" placeholder="Enter blog content" onChange={handleInputChange} value={blogData.content} ></textarea><br />
-            <p>vsvkmdlkd</p>
             <input type="file" onChange={handleImageChange} />
 
             <div>

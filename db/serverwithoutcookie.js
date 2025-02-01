@@ -153,7 +153,7 @@ http
                 const userObj = {
                   username: checkUsername.username,
                 };
-                const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn: '30min' });
+                const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn: '1hr' });
 
                 res.setHeader(
                   "Set-Cookie",
@@ -185,7 +185,7 @@ http
         break;
 
       case "/createblog": {
-        console.log("chuoshvb");
+        console.log("Reached Create Blog");
         let body = "";
         req.on("data", (chunk) => {
           body += chunk.toString();
@@ -263,7 +263,7 @@ http
       }
 
       case "/getmyblogs": {
-        console.log("reached hjlks");
+        console.log("reached getmyblogs");
         let body = "";
         req.on("data", (chunk) => {
           body += chunk.toString();
@@ -319,6 +319,7 @@ http
           // You cannot send headers again, but you can log the error
         }
         return;
+        break;
     }
   })
   .listen(PORT);

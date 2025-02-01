@@ -37,7 +37,7 @@ const SubmitBlogComp = ({setIsClicked}) =>{
     const submitBlog = async () => {
         try {
             let blogToSubmit = { ...blogData, username: currUserOrDraftKey };
-            const response = await fetch(`${url}/submitblog`, {
+            const response = await fetch(`${url}/createblog`, {
                 method: 'POST',
                 body: JSON.stringify(blogToSubmit),
                 headers: {
