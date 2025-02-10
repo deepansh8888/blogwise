@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+mongoose.set('strictQuery', false);
 
 const blogSchema = new mongoose.Schema({
     title: {
@@ -19,6 +20,8 @@ const blogSchema = new mongoose.Schema({
     username: {
         type: String,
     },
+
+    comments: [],
 },
 { timestamps: true },
 );

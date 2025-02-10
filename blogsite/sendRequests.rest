@@ -1,3 +1,41 @@
+
+
+// Submit Comment
+POST http://localhost:8080/createComment
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldiIsImlhdCI6MTczODkxODE0MCwiZXhwIjoxNzM4OTIxNzQwfQ.qplJAjDWz-A7CncT_kaOqFfPS2Qn01CNk51x0FGYPuA
+Content-Type: application/json
+
+{
+    # "_id": "67a5b28c5e196dd4dd7b75dc",
+    "blogId": "679dda35a20552c27f871676",
+    "username": "dev",
+    "comment": "Voilaaaa..."
+}
+
+###
+
+POST http://localhost:8080/getCommentsOfBlog
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldiIsImlhdCI6MTczODkxODE0MCwiZXhwIjoxNzM4OTIxNzQwfQ.qplJAjDWz-A7CncT_kaOqFfPS2Qn01CNk51x0FGYPuA
+Content-Type: application/json
+
+{
+    "blogId": "679dda35a20552c27f871676"
+}
+
+
+###
+
+//Delete Commnet
+POST http://localhost:8080/deleteComment
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldiIsImlhdCI6MTczODkxODE0MCwiZXhwIjoxNzM4OTIxNzQwfQ.qplJAjDWz-A7CncT_kaOqFfPS2Qn01CNk51x0FGYPuA
+Content-Type: application/json
+
+{
+    "_id": "67a5ac8d3b7e4314c1d484aa"
+}
+
+
+###
 // Registration Request
 POST http://localhost:8080/register
 
@@ -43,9 +81,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imt1b
 ###
 // Get Single Blog Request - Retrieves a specific blog post by title
 POST http://localhost:8080/getSingleBlog
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRldiIsImlhdCI6MTczODkxODE0MCwiZXhwIjoxNzM4OTIxNzQwfQ.qplJAjDWz-A7CncT_kaOqFfPS2Qn01CNk51x0FGYPuA
+Content-Type: application/json
 
 {
-    "title": "API Test"
+   "_id" : "679dda35a20552c27f871676"
 }
 
 ###

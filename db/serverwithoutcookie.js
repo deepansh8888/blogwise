@@ -4,9 +4,11 @@ require("./db_connect");
 require("dotenv").config();
 const Users = require("./users");
 const Blogs = require("./blogs");
+const Comments = require('./comments');
 const jwt = require("jsonwebtoken");
 // const formidable = require("formidable");
 var http = require("http");
+const { parse } = require("path");
 // const fs = require("fs");
 const PORT = process.env.PORT || 8080;
 
@@ -153,11 +155,10 @@ http
                 const userObj = {
                   username: checkUsername.username,
                 };
-                const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn: '1hr' });
+                const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn: '8hr' });
 
                 res.setHeader(
-                  "Set-Cookie",
-                  `username=${parsedBody.username};  Path=/;`
+                  "Set-Cookie", `username=${parsedBody.username};  Path=/;`
                 );
                 // res.setHeader('Authorization', `Bearer ${token}`);
                 // res.end(JSON.stringify({message: "Login SuccessFul"}));
@@ -241,7 +242,7 @@ http
           try {
             const parsedBody = JSON.parse(body); // Parse body safely
 
-            let blogFound = await Blogs.findOne({ _id: parsedBody._id }); // Query database
+            let blogFound = await Blogs.findById(parsedBody.blogId); // Query database
             if (blogFound) {
               res.end(JSON.stringify(blogFound)); // Send the blog data as response
             } else {
@@ -309,6 +310,82 @@ http
         });
         break;
       }
+
+      case "/createComment": {
+        console.log('reached comment api backend');
+        let body = '';
+        req.on('data', (chunk)=>{
+          body += chunk.toString();
+        })
+
+        req.on('end', async () => {
+          try {
+            let parsedBody = JSON.parse(body);
+            let toSendBody = {
+              blogId: parsedBody.blogId,
+                username: parsedBody.username,
+                comment: parsedBody.content
+            }
+            const findComment = await Comments.findById(parsedBody._id);
+            if (findComment) {
+              const updateComment = await Comments.findByIdAndUpdate(parsedBody._id, toSendBody, { new: true });
+
+              res.end(JSON.stringify({ message: "updated the comment" }));
+            } else {
+              const addComment = await Comments.create(toSendBody);
+              res.end(JSON.stringify({ message: "Added a new comment" }));
+            }
+          } catch (error) {
+            console.log("Failed at create comment backend api: ", error);
+          }
+        });
+
+        break;
+      }
+
+      case "/getCommentsOfBlog":{
+        console.log("reached getCommentsOfBlog at backend api");
+        let body = '';
+        req.on('data', (chunk)=>{
+          body += chunk.toString();
+        })
+
+        req.on('end', async ()=> {
+          try{
+            let parsedBody = JSON.parse(body);
+            let allComments = await Comments.find({blogId: parsedBody.blogId});
+            res.end(JSON.stringify(allComments));
+
+          }catch(error){
+            console.log("Eror at getting comments for a blog: ", error);
+          }
+        });
+
+        break;
+      }
+
+      case "/deleteComment": {
+        console.log("reached delete comment backend api");
+        let body = '';
+        req.on('data', (chunk)=>{
+          body += chunk.toString();
+        })
+
+        req.on('end', async()=>{
+          try{
+            let parsedBody = JSON.parse(body);
+            console.log(parsedBody.commentId);
+            let deleteComment = await Comments.findByIdAndRemove(parsedBody.commentId);
+            res.end(JSON.stringify({message: "Deleted the comment successfully at backend"}));
+          } catch(error){
+            console.log("Failed to delete the comment backend api:", error);
+          }
+
+        });
+
+        break;
+      }
+
 
       default:
         try {

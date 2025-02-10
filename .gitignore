@@ -1,0 +1,29 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+blogsite/node_modules
+blogsite/.pnp
+blogsite/.pnp.js
+db/node_modules
+
+# testing
+blogsite/coverage
+
+# production
+blogsite/build
+
+# misc
+blogsite/.DS_Store
+blogsite/.env.local
+blogsite/.env.development.local
+blogsite/.env.test.local
+blogsite/.env.production.local
+
+blogsite/npm-debug.log*
+blogsite/yarn-debug.log*
+blogsite/yarn-error.log*
+
+db/.env
+db/tempCodeRunnerFile.js
+
+db2/

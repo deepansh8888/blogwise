@@ -131,3 +131,16 @@ const Drafts = ()=> {
 }
 
 export default Drafts;
+
+
+/*
+so let me ge tthis straight, in redux, i first create a store and then create slices and define reduceres inside slice and actions inside 
+reducers and then i register the slices inside the store.
+Then i wrap my whole app inside this  store so that the app can access it.
+Then where ever i require to use the state from store, i import the slices and then inside an event handler, i dispatch an action.
+i can also access the value stored inside a slice 
+
+*/
+
+
+
