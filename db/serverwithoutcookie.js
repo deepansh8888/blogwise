@@ -332,6 +332,7 @@ http
 
               res.end(JSON.stringify({ message: "updated the comment" }));
             } else {
+              console.log("svdfvd");
               const addComment = await Comments.create(toSendBody);
               res.end(JSON.stringify({ message: "Added a new comment" }));
             }

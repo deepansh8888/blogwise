@@ -67,7 +67,7 @@ const ViewBlog = () => {
           />
         </div>
       )}
-      <CommentSection blogId={blogId}  />
+      <CommentSection blogId={blogId} blogUser={fetchedBlog.username} />
 
     </div>
   );

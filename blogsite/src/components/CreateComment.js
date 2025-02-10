@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ToggleContext } from '../context/myContext';
+import '../Comments.css';
 
 function CreateComment(props) {
     const { url } = useContext(ToggleContext);
     const [inputComment, setInputComment] = useState({
         blogId: props.blogId,
         content: '',
-        username: localStorage.getItem('user')
+        username: localStorage.getItem('user'),
+        _id: props.commentId,
     });
 
     async function handleSubmit(e) {
@@ -31,7 +33,8 @@ function CreateComment(props) {
                 content: ''
               });
 
-              props.onCommentSubmit();
+              props.onCommentSubmit && props.onCommentSubmit();
+              props.clickEditComment();
 
         } catch (error) {
             console.error('Error creating comment:', error);
@@ -46,9 +49,9 @@ function CreateComment(props) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <textarea placeholder='Add a comment...' value={inputComment.content} onChange={handleChange} />
-            <button type="submit">Post</button>
+        <form onSubmit={handleSubmit} className="comment-form">
+            <textarea placeholder='Add a comment...' value={inputComment.content} onChange={handleChange} id="comment-input"/>
+            <button type="submit" className='comment-buttons'>Post</button>
         </form>
     );
 }
