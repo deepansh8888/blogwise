@@ -97,6 +97,7 @@ function ViewComments(props) {
               localStorage.getItem("user") === comment.username && (
                 <CreateComment
                   commentId={comment._id}
+                  commentContent={comment.comment}
                   blogId={blogId}
                   onCommentSubmit={fetchComments}
                   clickEditComment={editComment}

@@ -6,7 +6,7 @@ function CreateComment(props) {
     const { url } = useContext(ToggleContext);
     const [inputComment, setInputComment] = useState({
         blogId: props.blogId,
-        content: '',
+        content: props.commentContent,
         username: localStorage.getItem('user'),
         _id: props.commentId,
     });
