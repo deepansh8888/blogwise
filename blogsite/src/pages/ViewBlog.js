@@ -4,8 +4,8 @@ import { ToggleContext } from '../context/myContext';
 import CommentSection from '../components/CommentSection';
 
 const ViewBlog = () => {
-  const { url } = useContext(ToggleContext);
   const location = useLocation();
+  const { url } = useContext(ToggleContext);
   const [fetchedBlog, setFetchedBlog] = useState(null);
   const [blogId, setBlogId] = useState(null);
 

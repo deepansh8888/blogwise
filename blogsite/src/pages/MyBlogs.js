@@ -4,9 +4,9 @@ import { convertFileToBase64 } from '../helpers/utils';
 import {ToggleContext} from '../context/myContext';
 
 const MyBlogs = ()=> {
+  const navigate = useNavigate();
   const {isToggled, setIsToggled, url} = useContext(ToggleContext);
     const location = useLocation();
-    const navigate = useNavigate();
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
     const [draft, setDraft] = useState('');
     const [isEdit, setIsEdit] = useState(false);

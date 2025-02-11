@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {ToggleContext} from '../context/myContext';
 
 const Home = ()=> {
-    // const location = useLocation();     
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+    const location = useLocation();     
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
     const {isToggled, setIsToggled, url} = useContext(ToggleContext);
     

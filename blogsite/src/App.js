@@ -10,28 +10,33 @@ import NavBar from './components/NavBar';
 import { ToggleProvider } from './context/myContext';
 import MyBlogs from './pages/MyBlogs';
 
+import {Provider} from 'react-redux';
+import { store } from './redux/store';
+
 const App = () =>{
   return (
-    <ToggleProvider>
     <BrowserRouter>
-    <Routes>
-    <Route path="/login" element={<Login/>} />
-    <Route path="/register" element={<Register/>} />
-    <Route path="/" element={ <Login/>} />
+      <Provider store={store}>
+        <ToggleProvider>
+          <Routes>
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/" element={<Login/>} />
 
-      <Route element= {<ProtectedRoute/>} >
-      <Route element={ <>  <NavBar />  <Outlet />   </> } >
-      <Route path="/home" element={<Home/>} />
-      <Route path="/viewblog" element={<ViewBlog/>} />
-      <Route path="/drafts" element={<Drafts/>} />
-      <Route path='/myblogs' element={<MyBlogs/>} />
-      </Route>
-      </Route>
+            <Route element={<ProtectedRoute/>}>
+              <Route element={<><NavBar /><Outlet /></>}>
+                <Route path="/home" element={<Home/>} />
+                <Route path="/viewblog" element={<ViewBlog/>} />
+                <Route path="/drafts" element={<Drafts/>} />
+                <Route path='/myblogs' element={<MyBlogs/>} />
+              </Route>
+            </Route>
 
-      <Route path="*" element={ <Navigate to="/" /> } />
-    </Routes>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </ToggleProvider>
+      </Provider>
     </BrowserRouter>
-    </ToggleProvider>
   )
 }
 

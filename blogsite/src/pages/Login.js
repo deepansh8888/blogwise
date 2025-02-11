@@ -3,24 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import '../login.css';
 import { ToggleContext } from '../context/myContext';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess } from '../features/auth/authSlice';
+
+
 const Login = ()=> {
-    const {url} = useContext(ToggleContext);
     const navigate = useNavigate();
+    const {url} = useContext(ToggleContext);
+    const dispatch = useDispatch();
+    const { isAuthenticated } = useSelector((state) => state.auth);
     const [userinfo , setUserInfo] = useState({
         username: '',
         password: '',
     })
-
-    useEffect(()=>{
-        let token = localStorage.getItem('token');
-        if ( token && token !== 'undefined') {
+    
+    // Change the useEffect to use Redux state instead of localStorage
+        useEffect(() => {
+        if (isAuthenticated) {
             navigate("/home");
-            console.log("Navigating to home from login");
-          } else {
-            console.log("Navigating to login from login ");
-            navigate("/login");
-          }
-    }, []);
+        }
+        }, [isAuthenticated, navigate]);
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -47,10 +49,12 @@ const Login = ()=> {
             });
             const data = await response.json();
             if(response.ok){
-                console.log("Login Successful", data);
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', userinfo.username);
-                console.log("Token fetched from local storage:",localStorage.getItem('token'));
+                console.log("Login attempt", data);
+                
+                dispatch(loginSuccess({
+                    username: userinfo.username,
+                    token: data.token
+                }));
                 navigate("/home");
             } else {
                 throw new Error(data.message || "Login failed");

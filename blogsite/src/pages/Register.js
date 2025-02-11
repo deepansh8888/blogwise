@@ -3,36 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import '../login.css';
 import { ToggleContext } from '../context/myContext';
 
+import { useSelector } from 'react-redux';
+
 const Register = ()=> {
-    const {url} = useContext(ToggleContext);
     const navigate = useNavigate();
+    const {url} = useContext(ToggleContext);
     const [regData, setRegData] = useState({
         username: '',
         email: '',
         password: ''
     });
+    const { isAuthenticated } = useSelector((state)=> state.auth);
+      // Extracts the 'isAuthenticated' property from the 'auth' slice in the Redux store state
+    //   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
         useEffect(()=>{
-            let token = localStorage.getItem('token');
-            if( token && token !== 'undefined'){
-                navigate("/home");
+            if(isAuthenticated){
+                navigate('/home');
                 console.log("Navigating to home from register");
             }
-            else{
-                navigate("/register");
+            else {
+                navigate('/register');
                 console.log("Navigating to register from register");
             }
     }, []);
 
     const handleChange = (event)=> {
-        console.log("handleChange Executed");
         const {name, value} = event.target;
         setRegData({...regData, [name]: value});
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
         try {
             const response = await fetch(`${url}/register`, {
                 method: "POST",
