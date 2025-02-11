@@ -4,8 +4,6 @@ import '../Comments.css';
 import { useSelector } from 'react-redux';
 
 function CreateComment(props) {
-    // const { url } = useContext(ToggleContext);
-    const { url } = useSelector((state) => state.toggle);
     const [inputComment, setInputComment] = useState({
         blogId: props.blogId,
         content: props.commentContent,
@@ -17,7 +15,7 @@ function CreateComment(props) {
         e.preventDefault();
         if (!inputComment.content) return;
         try {
-            const response = await fetch(`${url}/createComment`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createComment`, {
                 method: 'POST',
                 body: JSON.stringify(inputComment),
                 headers: {

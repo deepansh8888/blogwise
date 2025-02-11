@@ -1,16 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../login.css";
-import { ToggleContext } from "../context/myContext";
+// import { ToggleContext } from "../context/myContext";
 
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../features/auth/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
-    // const { url } = useContext(ToggleContext);
   const dispatch = useDispatch();
-  const { url } = useSelector((state) => state.toggle);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [userinfo, setUserInfo] = useState({
     username: "",
@@ -33,13 +31,14 @@ const Login = () => {
   };
 
   const handleSubmit = async (event) => {
+    console.log(process.env.REACT_APP_BACKEND_URL);
     event.preventDefault();
     try {
       if (!userinfo.username || !userinfo.password) {
         alert("Please fill in all fields");
         return;
       }
-      const response = await fetch(`${url}/login`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/login`, {
         method: "POST",
         body: JSON.stringify(userinfo),
         headers: {

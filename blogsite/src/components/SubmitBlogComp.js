@@ -8,9 +8,6 @@ import { setIsToggled, setDraftRefresh } from '../features/toggle/toggleSlice';
 const SubmitBlogComp = ({setIsClicked}) =>{
     const dispatch = useDispatch();
     const currUserOrDraftKey = localStorage.getItem('user');
-    // const {isToggled, setIsToggled, draftRefresh, setDraftRefresh, url} = useContext(ToggleContext);
-    // this state is differnt from the one defined in useToggle
-    const { url, isToggled, draftRefresh } = useSelector((state) => state.toggle);
     const [blogData, setBlogData] = useState({
         title: '',
         content: '',
@@ -42,7 +39,7 @@ const SubmitBlogComp = ({setIsClicked}) =>{
     const submitBlog = async () => {
         try {
             let blogToSubmit = { ...blogData, username: currUserOrDraftKey };
-            const response = await fetch(`${url}/createblog`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createblog`, {
                 method: 'POST',
                 body: JSON.stringify(blogToSubmit),
                 headers: {

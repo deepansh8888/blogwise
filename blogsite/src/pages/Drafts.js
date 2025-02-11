@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsToggled } from '../features/toggle/toggleSlice';
 
 const Drafts = ()=> {
-  // const { isToggled, setIsToggled, url} = useContext(ToggleContext);
+  // const { isToggled, setIsToggled} = useContext(ToggleContext);
   //this state is different from the one defined in useToggle
-  const { url, isToggled } = useSelector((state) => state.toggle);
+  const { isToggled } = useSelector((state) => state.toggle);
   const [blogData, setBlogData] = useState('');
   const [isDraftPresent, setIsDraftPresent] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
@@ -15,7 +15,6 @@ const Drafts = ()=> {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Hi");
     if (isDraftPresent === true) {
       const draft = JSON.parse(localStorage.getItem(currUserOrDraftKey));
       setBlogData(draft);
@@ -24,7 +23,7 @@ const Drafts = ()=> {
 
   const publishBlog = async () => {
     try {
-      const response = await fetch(`${url}/createblog`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createblog`, {
         method: "POST",
         body: JSON.stringify(blogData),
         headers: {
@@ -136,16 +135,4 @@ const Drafts = ()=> {
 }
 
 export default Drafts;
-
-
-/*
-so let me ge tthis straight, in redux, i first create a store and then create slices and define reduceres inside slice and actions inside 
-reducers and then i register the slices inside the store.
-Then i wrap my whole app inside this  store so that the app can access it.
-Then where ever i require to use the state from store, i import the slices and then inside an event handler, i dispatch an action.
-i can also access the value stored inside a slice 
-
-*/
-
-
 

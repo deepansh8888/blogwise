@@ -7,8 +7,8 @@ import { setIsToggled } from '../features/toggle/toggleSlice';
 
 const MyBlogs = ()=> {
   const navigate = useNavigate();
-  // const {isToggled, setIsToggled, url} = useContext(ToggleContext);
-    const { url, isToggled } = useSelector((state) => state.toggle);
+  // const {isToggled, setIsToggled} = useContext(ToggleContext);
+    const { isToggled } = useSelector((state) => state.toggle);
     // const location = useLocation();
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
     const [draft, setDraft] = useState('');
@@ -22,7 +22,7 @@ const MyBlogs = ()=> {
         const fetchBlogs = async () =>  {
             const username = currUserOrDraft;
             try{
-                const response = await fetch(`${url}/getmyblogs`, {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getmyblogs`, {
                     method: 'POST',
                     body: JSON.stringify({username: username}),
                     headers: {
@@ -56,7 +56,7 @@ const MyBlogs = ()=> {
 
     const deleteblog = async (_id, e) => {
       e.stopPropagation();
-      const response = await fetch(`${url}/deleteblog`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/deleteblog`, {
         method: 'POST',
         body: JSON.stringify({_id :_id}),
         headers: {

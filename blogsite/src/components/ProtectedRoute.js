@@ -7,8 +7,6 @@ import { restoreAuth } from "../features/auth/authSlice";
 
 const ProtectedRoute = () => {
   const navigate = useNavigate();
-//   const { url } = useContext(ToggleContext);
-    const { url } = useSelector((state) => state.toggle);
   const { token, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -21,7 +19,7 @@ const ProtectedRoute = () => {
       }
 
       try {
-        const response = await fetch(`${url}/authenticate`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/authenticate`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -45,7 +43,7 @@ const ProtectedRoute = () => {
     };
 
     authenticateUser();
-  }, [token, navigate, dispatch, url]);
+  }, [token, navigate, dispatch]);
 
   if (!isAuthenticated) {
     return <div>Loading...</div>;

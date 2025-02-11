@@ -6,21 +6,20 @@ import { useSelector } from "react-redux";
 
 function ViewComments(props) {
   const [fetchedComments, setFetchedComments] = useState([]);
-  // const { url } = useContext(ToggleContext);
-  const { url } = useSelector((state) => state.toggle);
+
   const blogId = props.blogId;
   const [editClicked, setEditClicked] = useState(false);
   const [indexState, setIndexState] = useState();
 
   useEffect(() => {
     fetchComments();
-  }, [blogId, url, ]);
+  }, [blogId]);
 
   const fetchComments = async () => {
     if (!blogId) return;
 
     try {
-      const response = await fetch(`${url}/getCommentsOfBlog`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getCommentsOfBlog`, {
         method: "POST",
         body: JSON.stringify({ blogId }),
         headers: {
@@ -45,7 +44,7 @@ function ViewComments(props) {
   const deleteComment = async (commentId)=>{
     try{
       console.log(commentId);
-      const response = await fetch(`${url}/deleteComment`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/deleteComment`, {
         method: 'POST',
         body: JSON.stringify({commentId: commentId}),
         headers: {

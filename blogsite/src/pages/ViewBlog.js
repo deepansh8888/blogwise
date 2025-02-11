@@ -1,13 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-// import { ToggleContext } from '../context/myContext';
 import CommentSection from '../components/CommentSection';
-import { useSelector } from 'react-redux';
 
 const ViewBlog = () => {
   const location = useLocation();
-  // const { url } = useContext(ToggleContext);
-  const { url } = useSelector((state) => state.toggle ); 
   const [fetchedBlog, setFetchedBlog] = useState(null);
   const [blogId, setBlogId] = useState(null);
 
@@ -22,7 +18,7 @@ const ViewBlog = () => {
       if (!blogId) return;
 
       try {
-        const response = await fetch(`${url}/getSingleBlog`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getSingleBlog`, {
           method: 'POST',
           body: JSON.stringify({ blogId }),
           headers: {
@@ -44,7 +40,7 @@ const ViewBlog = () => {
     };
 
     fetchBlogFunc();
-  }, [blogId, url]);
+  }, [blogId]);
 
 
 

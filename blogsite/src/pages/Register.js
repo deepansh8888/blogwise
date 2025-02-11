@@ -1,15 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../login.css';
-// import { ToggleContext } from '../context/myContext';
 
 import { useSelector } from 'react-redux';
 
 const Register = ()=> {
     const navigate = useNavigate();
-    // const {url} = useContext(ToggleContext);
-    const { url } = useSelector((state)=> state.toggle);
-
     const [regData, setRegData] = useState({
         username: '',
         email: '',
@@ -38,7 +34,7 @@ const Register = ()=> {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`${url}/register`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/register`, {
                 method: "POST",
                 body: JSON.stringify(regData),
                 headers: { 'Content-Type': 'application/json'
