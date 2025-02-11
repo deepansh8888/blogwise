@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { ToggleContext } from "../context/myContext";
+// import { ToggleContext } from "../context/myContext";
 
 import { useSelector, useDispatch } from "react-redux";
 import { restoreAuth } from "../features/auth/authSlice";
 
 const ProtectedRoute = () => {
   const navigate = useNavigate();
-  const { url } = useContext(ToggleContext);
+//   const { url } = useContext(ToggleContext);
+    const { url } = useSelector((state) => state.toggle);
   const { token, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   // const [isAuthenticated, setIsAuthenticated] = useState(false);

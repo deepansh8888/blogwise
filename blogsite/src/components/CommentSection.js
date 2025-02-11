@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import CreateComment from "./CreateComment";
-import { ToggleContext } from "../context/myContext";
+// import { ToggleContext } from "../context/myContext";
 import '../Comments.css';
+import { useSelector } from "react-redux";
 
 function ViewComments(props) {
   const [fetchedComments, setFetchedComments] = useState([]);
-  const { url } = useContext(ToggleContext);
+  // const { url } = useContext(ToggleContext);
+  const { url } = useSelector((state) => state.toggle);
   const blogId = props.blogId;
   const [editClicked, setEditClicked] = useState(false);
   const [indexState, setIndexState] = useState();

@@ -1,14 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {ToggleContext} from '../context/myContext';
+// import {ToggleContext} from '../context/myContext';
 import { convertFileToBase64 } from '../helpers/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsToggled } from '../features/toggle/toggleSlice';
 
 const Drafts = ()=> {
-  const { isToggled, setIsToggled, url} = useContext(ToggleContext);
+  // const { isToggled, setIsToggled, url} = useContext(ToggleContext);
   //this state is different from the one defined in useToggle
+  const { url, isToggled } = useSelector((state) => state.toggle);
   const [blogData, setBlogData] = useState('');
   const [isDraftPresent, setIsDraftPresent] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const currUserOrDraftKey = localStorage.getItem('user');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log("Hi");
@@ -34,7 +38,8 @@ const Drafts = ()=> {
       alert("Blog Submitted Successfully");
       localStorage.removeItem(currUserOrDraftKey);
       setIsDraftPresent(false);
-      setIsToggled(!isToggled);
+      // setIsToggled(!isToggled);
+      dispatch(setIsToggled);
       setBlogData({
         title: "",
         content: "",

@@ -1,11 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {ToggleContext} from '../context/myContext';
+// import {ToggleContext} from '../context/myContext';
 import { convertFileToBase64 } from '../helpers/utils';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsToggled, setDraftRefresh } from '../features/toggle/toggleSlice';
+
 const SubmitBlogComp = ({setIsClicked}) =>{
+    const dispatch = useDispatch();
     const currUserOrDraftKey = localStorage.getItem('user');
-    const {isToggled, setIsToggled, draftRefresh, setDraftRefresh, url} = useContext(ToggleContext);
+    // const {isToggled, setIsToggled, draftRefresh, setDraftRefresh, url} = useContext(ToggleContext);
     // this state is differnt from the one defined in useToggle
+    const { url, isToggled, draftRefresh } = useSelector((state) => state.toggle);
     const [blogData, setBlogData] = useState({
         title: '',
         content: '',
@@ -57,7 +62,8 @@ const SubmitBlogComp = ({setIsClicked}) =>{
                 imageUrl: null,
             });
 
-            setIsToggled(!isToggled);
+            // setIsToggled(!isToggled);
+            dispatch(setIsToggled());
             setIsClicked(false);
             
         } catch (error) {
@@ -77,7 +83,7 @@ const SubmitBlogComp = ({setIsClicked}) =>{
                         image: null,
                     });
                 setIsClicked(false);
-                setDraftRefresh(!draftRefresh)
+                dispatch(setDraftRefresh());
         };
 
     return (<>

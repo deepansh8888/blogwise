@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ToggleContext } from '../context/myContext';
+// import { ToggleContext } from '../context/myContext';
 import '../Comments.css';
+import { useSelector } from 'react-redux';
 
 function CreateComment(props) {
-    const { url } = useContext(ToggleContext);
+    // const { url } = useContext(ToggleContext);
+    const { url } = useSelector((state) => state.toggle);
     const [inputComment, setInputComment] = useState({
         blogId: props.blogId,
         content: props.commentContent,

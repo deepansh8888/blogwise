@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {ToggleContext} from '../context/myContext';
+// import {ToggleContext} from '../context/myContext';
 
 const Home = ()=> {
   const navigate = useNavigate();
-    const location = useLocation();     
+    // const location = useLocation();     
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
-    const {isToggled, setIsToggled, url} = useContext(ToggleContext);
+    // const {isToggled, setIsToggled, url} = useContext(ToggleContext);
+    const { url, isToggled } = useSelector((state)=> state.toggle);
     
     useEffect(() => {
         //useEffect doesn't accept async function directly
@@ -32,7 +34,7 @@ const Home = ()=> {
             } catch(error) {console.log(error);}
         }
         fetchBlogs();
-    },[isToggled, setIsToggled]);
+    },[isToggled]);
 
     const blogView = (_id)=> {
       console.log(_id)

@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { convertFileToBase64 } from '../helpers/utils';
-import {ToggleContext} from '../context/myContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsToggled } from '../features/toggle/toggleSlice';
+// import {ToggleContext} from '../context/myContext';
 
 const MyBlogs = ()=> {
   const navigate = useNavigate();
-  const {isToggled, setIsToggled, url} = useContext(ToggleContext);
-    const location = useLocation();
+  // const {isToggled, setIsToggled, url} = useContext(ToggleContext);
+    const { url, isToggled } = useSelector((state) => state.toggle);
+    // const location = useLocation();
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
     const [draft, setDraft] = useState('');
     const [isEdit, setIsEdit] = useState(false);
     const currUserOrDraft = localStorage.getItem('user');
+    const dispatch = useDispatch();
     
     useEffect(() => {
       console.log("Before Api call")
@@ -62,7 +66,8 @@ const MyBlogs = ()=> {
         credentials: 'include',
       })
 
-      setIsToggled(!isToggled);
+      // setIsToggled(!isToggled);
+      dispatch(setIsToggled());
     }
 
   const handleInputChange = (event)=> {
