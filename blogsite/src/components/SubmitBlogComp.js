@@ -3,7 +3,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { convertFileToBase64 } from '../helpers/utils';
 
 import { useDispatch } from 'react-redux';
-import { setDraftRefresh, setRefreshBlogs } from '../features/toggle/toggleSlice';
+import { setDraftsRefresh } from '../features/toggle/toggleSlice';
+import { createNewBlog, setBlogsRefresh } from '../features/blogs/blogsSlice';
 
 const SubmitBlogComp = ({setIsClicked}) =>{
     const dispatch = useDispatch();
@@ -12,45 +13,77 @@ const SubmitBlogComp = ({setIsClicked}) =>{
         title: '',
         content: '',
         image: '',
-        imageUrl: null,
+        imageUrl: '',
     });     
 
     const [error, setError] = useState({
         titleMissing: false,
         contentMissing: false
     });
-
+        
     const submitBlog = async () => {
         try {
-            let blogToSubmit = { ...blogData, username: currUserOrDraftKey };
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createblog`, {
-                method: 'POST',
-                body: JSON.stringify(blogToSubmit),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                credentials: 'include',
-            });
+            const blogToSubmit = { ...blogData, username: currUserOrDraftKey };
+            await dispatch(createNewBlog(blogToSubmit)).unwrap();
             
-            console.log(blogData);
-
-            alert("Blog Submitted Successfully");
             setBlogData({
                 title: '',
                 content: '',
-                image: null,
-                imageUrl: null,
+                image: '',
+                imageUrl: '',
             });
-
-            // setIsToggled(!isToggled);
-            dispatch(setRefreshBlogs());
+            dispatch(setBlogsRefresh());
             setIsClicked(false);
-            
+            alert("Blog Submitted Successfully");
         } catch (error) {
             console.error("Error submitting blog:", error);
             alert("Failed to submit blog: " + error.message);
         }
+    };
+    
+    // const submitBlog = async () => {
+    //     try {
+    //         let blogToSubmit = { ...blogData, username: currUserOrDraftKey };
+    //         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createblog`, {
+    //             method: 'POST',
+    //             body: JSON.stringify(blogToSubmit),
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: `Bearer ${localStorage.getItem('token')}`,
+    //             },
+    //             credentials: 'include',
+    //         });
+            
+    //         console.log(blogData);
+
+    //         alert("Blog Submitted Successfully");
+    //         setBlogData({
+    //             title: '',
+    //             content: '',
+    //             image: null,
+    //             imageUrl: null,
+    //         });
+    //         // setIsToggled(!isToggled);
+    //         dispatch(setBlogsRefresh());
+    //         setIsClicked(false);
+            
+    //     } catch (error) {
+    //         console.error("Error submitting blog:", error);
+    //         alert("Failed to submit blog: " + error.message);
+    //     }
+    // };
+
+    const saveDraft = async () => {
+        let newDraft = { ...blogData, username: currUserOrDraftKey };
+                localStorage.setItem(currUserOrDraftKey, JSON.stringify(newDraft));
+                alert("Draft Saved!");
+                setBlogData({
+                    title: "",
+                    content: "",
+                    image: '',
+                });
+            setIsClicked(false);
+            dispatch(setDraftsRefresh());
     };
 
     const handleInputChange = (event)=> {
@@ -69,20 +102,6 @@ const SubmitBlogComp = ({setIsClicked}) =>{
         setBlogData({...blogData, image: byte64Image, imageUrl: imageUrl});
     };
 
-    const saveDraft = async () => {
-
-            let newDraft = { ...blogData, username: currUserOrDraftKey };
-                    localStorage.setItem(currUserOrDraftKey, JSON.stringify(newDraft));
-                    alert("Draft Saved!");
-                    setBlogData({
-                        title: "",
-                        content: "",
-                        image: null,
-                    });
-                setIsClicked(false);
-                dispatch(setDraftRefresh());
-        };
-
     return (<>
         <div id="blogform">
           <textarea id="textAreaTitle" name="title" placeholder="Enter blog title" onChange={handleInputChange} value={blogData.title} ></textarea><br />
@@ -98,7 +117,7 @@ const SubmitBlogComp = ({setIsClicked}) =>{
             <button onClick={submitBlog}> Publish </button>
             <button onClick={() => setIsClicked(false)} id="draft-button">Close</button>
           </div>
-          {blogData.imageUrl && <img src={blogData.imageUrl} height="300" />}
+          {blogData.imageUrl && <img src={blogData.imageUrl} alt="Blog preview" height="300" />}
         </div>
       </>
     )

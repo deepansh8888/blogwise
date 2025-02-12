@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { convertFileToBase64 } from '../helpers/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRefreshBlogs } from '../features/toggle/toggleSlice';
+import { setBlogsRefresh } from '../features/blogs/blogsSlice';
 // import {ToggleContext} from '../context/myContext';
 
 const MyBlogs = ()=> {
   const navigate = useNavigate();
   // const {isToggled, setIsToggled} = useContext(ToggleContext);
-    const { refreshBlogsFlag } = useSelector((state) => state.toggle);
+    const { blogsRefreshFlag } = useSelector((state) => state.toggle);
     // const location = useLocation();
     const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
     const [draft, setDraft] = useState('');
@@ -42,7 +42,7 @@ const MyBlogs = ()=> {
         }
         fetchBlogs();
 
-    },[isEdit, draft, refreshBlogsFlag]);
+    },[isEdit, draft, blogsRefreshFlag]);
 
     const blogView = (_id)=> {
         navigate("/Viewblog", {state: {_id}});
@@ -67,7 +67,7 @@ const MyBlogs = ()=> {
       })
 
       // setIsToggled(!isToggled);
-      dispatch(setRefreshBlogs());
+      dispatch(setBlogsRefresh());
     }
 
   const handleInputChange = (event)=> {

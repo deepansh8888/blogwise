@@ -2,12 +2,12 @@ import React, { useEffect, useState, useContext } from 'react';
 // import {ToggleContext} from '../context/myContext';
 import { convertFileToBase64 } from '../helpers/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRefreshBlogs } from '../features/toggle/toggleSlice';
+import { setBlogsRefresh } from '../features/blogs/blogsSlice';
 
 const Drafts = ()=> {
   // const { isToggled, setIsToggled} = useContext(ToggleContext);
   //this state is different from the one defined in useToggle
-  const { refreshBlogsFlag } = useSelector((state) => state.toggle);
+  const { draftsRefreshFlag } = useSelector((state) => state.toggle);
   const [blogData, setBlogData] = useState('');
   const [isDraftPresent, setIsDraftPresent] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
@@ -19,7 +19,7 @@ const Drafts = ()=> {
       const draft = JSON.parse(localStorage.getItem(currUserOrDraftKey));
       setBlogData(draft);
     }
-  }, [isDraftPresent, isEdit]);
+  }, [isDraftPresent, isEdit, draftsRefreshFlag]);
 
   const publishBlog = async () => {
     try {
@@ -38,7 +38,7 @@ const Drafts = ()=> {
       localStorage.removeItem(currUserOrDraftKey);
       setIsDraftPresent(false);
       // setIsToggled(!isToggled);
-      dispatch(setRefreshBlogs());
+      dispatch(setBlogsRefresh());
       setBlogData({
         title: "",
         content: "",

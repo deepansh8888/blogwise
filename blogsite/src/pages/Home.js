@@ -1,49 +1,51 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 // import {ToggleContext} from '../context/myContext';
+import { fetchAllBlogs } from '../features/blogs/blogsSlice';
 
 const Home = ()=> {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
     // const location = useLocation();     
-    const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
+    // const [blogs, setBlogs] = useState([]);     //use to fetch and store all the blogs
     // const {isToggled, setIsToggled} = useContext(ToggleContext);
-    const { refreshBlogsFlag } = useSelector((state)=> state.toggle);
-    
-    useEffect(() => {
-        //useEffect doesn't accept async function directly
-        const fetchBlogs = async () =>  {
-            try{
-                console.log("Home.js",localStorage.getItem('token'));
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getallblogs`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`,
-                      },
-                      credentials: 'include',
-                });
+    // const { blogsRefreshFlag } = useSelector((state)=> state.toggle);
 
-                console.log("Home.js",response);
-                if (!response.ok) {
-                    throw new Error(`Error1: ${response.statusText}`);
-                }                
-                const data = await response.json();
-                console.log("Home.js", data);
-                setBlogs(data);
-            } catch(error) {console.log(error);}
-        }
-        fetchBlogs();
-    },[refreshBlogsFlag]);
+   dispatch(fetchAllBlogs());
+
+   const blogs = useSelector((state)=> state.blog.allBlogs);
+    // useEffect(() => {
+    //     //useEffect doesn't accept async function directly
+    //     const fetchBlogs = async () =>  {
+    //         try{
+    //             console.log("Home.js",localStorage.getItem('token'));
+    //             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getallblogs`, {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "Authorization": `Bearer ${localStorage.getItem('token')}`,
+    //                   },
+    //                   credentials: 'include',
+    //             });
+
+    //             console.log("Home.js",response);
+    //             if (!response.ok) {
+    //                 throw new Error(`Error1: ${response.statusText}`);
+    //             }                
+    //             const data = await response.json();
+    //             console.log("Home.js", data);
+    //             setBlogs(data);
+    //         } catch(error) {console.log(error);}
+    //     }
+    //     fetchBlogs();
+    // },[blogsRefreshFlag]);
 
     const blogView = (_id)=> {
       console.log(_id)
         navigate("/Viewblog", {state: {_id}});
     }
 
-    const username = localStorage.getItem('user');
-    // FILTERING BASED ON USER
-    // const filteredBlogs = (location.state && location.state.whose==="me") ? blogs.filter((blog)=> blog.username===username) : blogs;
-    //After uncomenting this, just change blogs in blogs.map to filteredBlogs
+    // const username = localStorage.getItem('user');
 
      return (
        <div>
