@@ -2,12 +2,12 @@ import React, { useEffect, useState, useContext } from 'react';
 // import {ToggleContext} from '../context/myContext';
 import { convertFileToBase64 } from '../helpers/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsToggled } from '../features/toggle/toggleSlice';
+import { setRefreshBlogs } from '../features/toggle/toggleSlice';
 
 const Drafts = ()=> {
   // const { isToggled, setIsToggled} = useContext(ToggleContext);
   //this state is different from the one defined in useToggle
-  const { isToggled } = useSelector((state) => state.toggle);
+  const { refreshBlogsFlag } = useSelector((state) => state.toggle);
   const [blogData, setBlogData] = useState('');
   const [isDraftPresent, setIsDraftPresent] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
@@ -38,7 +38,7 @@ const Drafts = ()=> {
       localStorage.removeItem(currUserOrDraftKey);
       setIsDraftPresent(false);
       // setIsToggled(!isToggled);
-      dispatch(setIsToggled);
+      dispatch(setRefreshBlogs());
       setBlogData({
         title: "",
         content: "",

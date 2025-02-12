@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isToggled: false,
+    refreshBlogsFlag: false,
     draftRefresh: false,
 }
 
@@ -9,8 +9,8 @@ const toggleSlice = createSlice({
     name: 'toggle',
     initialState,
     reducers: {
-        setIsToggled: (state) => {
-            state.isToggled = !state.isToggled;
+        setRefreshBlogs: (state) => {
+            state.refreshBlogsFlag = !state.refreshBlogsFlag;
         },
         setDraftRefresh: (state) => {
             state.draftRefresh = !state.draftRefresh;
@@ -18,5 +18,5 @@ const toggleSlice = createSlice({
     }
 });
 
-export const { setIsToggled, setDraftRefresh } = toggleSlice.actions;
+export const { setRefreshBlogs, setDraftRefresh } = toggleSlice.actions;
 export default toggleSlice.reducer;

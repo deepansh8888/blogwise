@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 // import {ToggleContext} from '../context/myContext';
 import { convertFileToBase64 } from '../helpers/utils';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsToggled, setDraftRefresh } from '../features/toggle/toggleSlice';
+import { useDispatch } from 'react-redux';
+import { setDraftRefresh, setRefreshBlogs } from '../features/toggle/toggleSlice';
 
 const SubmitBlogComp = ({setIsClicked}) =>{
     const dispatch = useDispatch();
@@ -19,22 +19,6 @@ const SubmitBlogComp = ({setIsClicked}) =>{
         titleMissing: false,
         contentMissing: false
     });
-
-    const handleInputChange = (event)=> {
-        try{
-            const {name, value} = event.target;
-            setBlogData({...blogData, [name]: value});
-    }
-    catch(error){
-        console.log("HandleChange Event Handler error:", error);
-    }
-    };
-
-    const handleImageChange = async  (event) => {
-        const imageUrl = URL.createObjectURL(event.target.files[0]);
-        let byte64Image = await convertFileToBase64(event.target.files[0]);
-        setBlogData({...blogData, image: byte64Image, imageUrl: imageUrl});
-    };
 
     const submitBlog = async () => {
         try {
@@ -60,13 +44,29 @@ const SubmitBlogComp = ({setIsClicked}) =>{
             });
 
             // setIsToggled(!isToggled);
-            dispatch(setIsToggled());
+            dispatch(setRefreshBlogs());
             setIsClicked(false);
             
         } catch (error) {
             console.error("Error submitting blog:", error);
             alert("Failed to submit blog: " + error.message);
         }
+    };
+
+    const handleInputChange = (event)=> {
+        try{
+            const {name, value} = event.target;
+            setBlogData({...blogData, [name]: value});
+    }
+    catch(error){
+        console.log("HandleChange Event Handler error:", error);
+    }
+    };
+
+    const handleImageChange = async  (event) => {
+        const imageUrl = URL.createObjectURL(event.target.files[0]);
+        let byte64Image = await convertFileToBase64(event.target.files[0]);
+        setBlogData({...blogData, image: byte64Image, imageUrl: imageUrl});
     };
 
     const saveDraft = async () => {
