@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const initialState = {
   allBlogs: [],
   userBlogs: [],
+  singleBlog: null,
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null
 }
@@ -36,6 +37,9 @@ const blogsSlice = createSlice({
         })
         .addCase(deleteblog.fulfilled, (state, action)=>{
           state.status = 'succeeded';
+        })
+        .addCase(fetchsingleblog.fulfilled, (state, action) => {
+          state.singleBlog = action.payload;
         })
     }
   });
@@ -124,6 +128,28 @@ export const deleteblog = createAsyncThunk(
     }
   }
 );
+
+
+export const fetchsingleblog = createAsyncThunk('blogs/getsingleblog', 
+  async( blogId, thunkAPI) => {
+    try{
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getSingleBlog`, {
+        method: 'POST',
+        body: JSON.stringify({ blogId }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) throw new Error(`Failed to fetch blog: ${response.status}`);
+      return await response.json();
+    }catch(error){
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+)
 
 export default blogsSlice.reducer;
 

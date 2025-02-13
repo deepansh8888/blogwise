@@ -1,10 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
-import CommentSection from '../components/CommentSection';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import CommentSection from "../components/CommentSection";
+import { fetchsingleblog } from "../features/blogs/blogsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ViewBlog = () => {
   const location = useLocation();
-  const [fetchedBlog, setFetchedBlog] = useState(null);
+  const dispatch = useDispatch();
+  const fetchedBlog = useSelector((state) => state.blog.singleBlog);
   const [blogId, setBlogId] = useState(null);
 
   useEffect(() => {
@@ -18,31 +21,13 @@ const ViewBlog = () => {
       if (!blogId) return;
 
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getSingleBlog`, {
-          method: 'POST',
-          body: JSON.stringify({ blogId }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          credentials: 'include',
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch blog: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setFetchedBlog(data);
+        dispatch(fetchsingleblog(blogId));
       } catch (error) {
         console.error("Error fetching blog:", error);
       }
     };
-
     fetchBlogFunc();
-  }, [blogId]);
-
-
+  }, [blogId, dispatch]);
 
   if (!fetchedBlog) {
     return <div>Loading...</div>;
@@ -51,22 +36,15 @@ const ViewBlog = () => {
   return (
     <div id="viewBlogContainer">
       <h1 id="blogTitle">{fetchedBlog.title}</h1>
-      <h3 id="blogAuthor">
-        AUTHOR: {fetchedBlog.username?.toUpperCase()}
-      </h3>
+      <h3 id="blogAuthor">AUTHOR: {fetchedBlog.username?.toUpperCase()}</h3>
       <p id="blogContent">{fetchedBlog.content}</p>
-      
+
       {fetchedBlog.image && (
         <div id="blogImageContainer">
-          <img 
-            src={fetchedBlog.image} 
-            id="blogImage" 
-            alt={fetchedBlog.title || 'Blog image'}
-          />
+          <img src={fetchedBlog.image} id="blogImage" alt={fetchedBlog.title || "Blog image"} />
         </div>
       )}
       <CommentSection blogId={blogId} blogUser={fetchedBlog.username} />
-
     </div>
   );
 };
