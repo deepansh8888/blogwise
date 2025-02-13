@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  blogsRefreshFlag: false,
   allBlogs: [],
   userBlogs: [],
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -12,9 +11,6 @@ const blogsSlice = createSlice({
     name: 'blogs',
     initialState,
     reducers: {
-      setBlogsRefresh: (state) => {
-        state.blogsRefreshFlag = !state.blogsRefreshFlag;
-    },
     },
     extraReducers: (builder) => {
       builder
@@ -29,17 +25,23 @@ const blogsSlice = createSlice({
           state.status = 'failed';
           state.error = action.payload;
         })
-        .addCase(createNewBlog.fulfilled, (state, action) => {
-          state.allBlogs.unshift(action.payload);
+        .addCase(createNewBlog.fulfilled, (state, action) =>{
+          state.status = 'idle';
         })
         .addCase(createNewBlog.rejected, (state, action) => {
           state.error = action.payload;
-        });
+        })
+        .addCase(fetchUserBlogs.fulfilled, (state, action)=>{
+          state.userBlogs = action.payload;
+        })
+        .addCase(deleteblog.fulfilled, (state, action)=>{
+          state.status = 'succeeded';
+        })
     }
   });
 
 
-const fetchAllBlogs = createAsyncThunk(
+export const fetchAllBlogs = createAsyncThunk(
   'blogs/fetchAll',  // Action type prefix
   async ( _ , thunkAPI) => {
     try {
@@ -59,13 +61,14 @@ const fetchAllBlogs = createAsyncThunk(
   }
 );
 
-const createNewBlog = createAsyncThunk(
+export const createNewBlog = createAsyncThunk(
   'blogs/create',
   async (blogData, thunkAPI) => {
     try {
+      let blogToSend = {...blogData, username: localStorage.getItem("user")};
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createblog`, {
         method: 'POST',
-        body: JSON.stringify(blogData),
+        body: JSON.stringify(blogToSend),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -80,15 +83,49 @@ const createNewBlog = createAsyncThunk(
   }
 );
 
-export { fetchAllBlogs, createNewBlog };
-export const { setBlogsRefresh } = blogsSlice.actions;
+export const fetchUserBlogs = createAsyncThunk(
+  'blogs/fetchuserblogs',
+  async ( _, thunkAPI) => {
+    try{
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getmyblogs`, {
+        method: 'POST',
+        body: JSON.stringify({ username: localStorage.getItem('user') }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
+        },
+        credentials: 'include',
+      });
+      return await response.json();
+    }catch(error){
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteblog = createAsyncThunk(
+  'blogs/delete',
+  async (_id, thunkAPI) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/deleteblog`, {
+        method: 'POST',
+        body: JSON.stringify({ _id: _id }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) throw new Error('Failed to delete blog');
+      return await response.json();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export default blogsSlice.reducer;
-
-
-
-
-
-
 
 
 

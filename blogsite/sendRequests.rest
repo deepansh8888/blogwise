@@ -91,8 +91,8 @@ Content-Type: application/json
 ###
 POST http://localhost:8080/deleteblog
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imt1bmFsIiwiaWF0IjoxNzM4MjEyMDQ4fQ.u5xwHbt_ucJndmbEyCmv-Rk0MKcd78byVXaUBrDsaGs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpdnlhbnNoIiwiaWF0IjoxNzM5NDI5MTAzLCJleHAiOjE3Mzk0NTc5MDN9.-TX0hmcBC_lb3SN4X8femGepdXNdCb7RAhJH6Xv4Xmw
 
 {
-    "title": "hell1"
+    "_id": "67ad903ab45c59544d66038b"
 }
