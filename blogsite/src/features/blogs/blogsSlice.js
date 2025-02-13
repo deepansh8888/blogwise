@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+let initialState = {
   allBlogs: [],
   userBlogs: [],
   singleBlog: null,

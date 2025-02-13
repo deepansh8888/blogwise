@@ -1,59 +1,46 @@
-import React, { useContext, useEffect, useState } from 'react';
-// import { ToggleContext } from '../context/myContext';
-import '../Comments.css';
-import { useSelector } from 'react-redux';
+import React, { useState } from "react";
+import "../Comments.css";
+import { useDispatch } from "react-redux";
+import { createComment } from "../features/comments/commentsSlice";
 
 function CreateComment(props) {
+
+    const dispatch = useDispatch();
     const [inputComment, setInputComment] = useState({
-        blogId: props.blogId,
-        content: props.commentContent,
-        username: localStorage.getItem('user'),
-        _id: props.commentId,
+      blogId: props.blogId,
+      content: props.commentContent,
+      username: localStorage.getItem("user"),
+      _id: props.commentId,
     });
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        if (!inputComment.content) return;
-        try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/createComment`, {
-                method: 'POST',
-                body: JSON.stringify(inputComment),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-                credentials: 'include'
-            });
-            if (!response.ok) {
-                throw new Error('Failed to create comment');
-            }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!inputComment.content) return;
+    try {
+        dispatch(createComment(inputComment));
 
-            setInputComment({
-                ...inputComment,
-                content: ''
-              });
+      setInputComment({ ...inputComment, content: "" });
 
-              props.onCommentSubmit && props.onCommentSubmit();
-              props.clickEditComment();
-
-        } catch (error) {
-            console.error('Error creating comment:', error);
-        }
+      props.onCommentSubmit && props.onCommentSubmit();
+      props.clickEditComment();
+    } catch (error) {
+      console.error("Error creating comment:", error);
     }
+  }
 
-    function handleChange(e) {
-        setInputComment({
-            ...inputComment,
-            content: e.target.value
-        });
-    }
+  function handleChange(e) {
+    setInputComment({
+      ...inputComment,
+      content: e.target.value,
+    });
+  }
 
-    return (
-        <form onSubmit={handleSubmit} className="comment-form">
-            <textarea placeholder='Add a comment...' value={inputComment.content} onChange={handleChange} id="comment-input"/>
-            <button type="submit" className='comment-buttons'>Post</button>
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit} className="comment-form">
+      <textarea placeholder="Add a comment..." value={inputComment.content} onChange={handleChange} id="comment-input" />
+      <button type="submit" className="comment-buttons"> Post </button>
+    </form>
+  );
 }
 
 export default CreateComment;
