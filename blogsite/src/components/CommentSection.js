@@ -1,60 +1,33 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import CreateComment from "./CreateComment";
-// import { ToggleContext } from "../context/myContext";
 import '../Comments.css';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchComments, deleteComment } from "../features/comments/commentsSlice";
 
 function ViewComments(props) {
-  const [fetchedComments, setFetchedComments] = useState([]);
-
+  const fetchedComments = useSelector((state) => state.comment.comments);
+  const dispatch = useDispatch();
   const blogId = props.blogId;
   const [editClicked, setEditClicked] = useState(false);
   const [indexState, setIndexState] = useState();
 
   useEffect(() => {
-    fetchComments();
+    fetchCommentsFunc();
   }, [blogId]);
 
-  const fetchComments = async () => {
+  const fetchCommentsFunc = async () => {
     if (!blogId) return;
-
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/getCommentsOfBlog`, {
-        method: "POST",
-        body: JSON.stringify({ blogId }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch comments: ${response.status}`);
-      }
-
-      const data = await response.json();
-      data.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setFetchedComments(data);
+      await dispatch(fetchComments(blogId)).unwrap();
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
   };
 
-  const deleteComment = async (commentId)=>{
+  const deleteCommentFunc = async (commentId)=>{
     try{
-      console.log(commentId);
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/deleteComment`, {
-        method: 'POST',
-        body: JSON.stringify({commentId: commentId}),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        credentials: 'include'
-      });
-
-      fetchComments();
+      await dispatch(deleteComment(commentId)).unwrap();
+      await dispatch(fetchComments(blogId)).unwrap();
     }
     catch(error){
       console.log("Failed to delete comment:", error);
@@ -65,6 +38,7 @@ function ViewComments(props) {
     try{
       setEditClicked(!editClicked);
       setIndexState(index);
+      dispatch(fetchComments(blogId));
     } catch(error){
       console.log("Failed to edit comment", error);
     }
@@ -73,7 +47,7 @@ function ViewComments(props) {
   return (
     <>
       <div>
-        <CreateComment blogId={blogId} onCommentSubmit={fetchComments} />
+        <CreateComment blogId={blogId} onCommentSubmit={fetchCommentsFunc} />
       </div>
 
       <div>
@@ -87,7 +61,7 @@ function ViewComments(props) {
 
             {(localStorage.getItem("user") === comment.username ||
               localStorage.getItem("user") === props.blogUser) && (
-              <button onClick={() => deleteComment(comment._id)} className="comment-buttons">Delete</button>
+              <button onClick={() => deleteCommentFunc(comment._id)} className="comment-buttons">Delete</button>
             )}
 
             {localStorage.getItem("user") === comment.username && (
@@ -96,13 +70,7 @@ function ViewComments(props) {
 
             {(editClicked &&  indexState === index ) &&
               localStorage.getItem("user") === comment.username && (
-                <CreateComment
-                  commentId={comment._id}
-                  commentContent={comment.comment}
-                  blogId={blogId}
-                  onCommentSubmit={fetchComments}
-                  clickEditComment={editComment}
-                />
+                <CreateComment commentId={comment._id} commentContent={comment.comment} blogId={blogId} onCommentSubmit={fetchCommentsFunc} clickEditComment={editComment} />
               )}
           </div>
           </div>

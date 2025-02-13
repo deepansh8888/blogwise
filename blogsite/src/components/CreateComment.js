@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../Comments.css";
 import { useDispatch } from "react-redux";
-import { createComment } from "../features/comments/commentsSlice";
+import { createComment, fetchComments } from "../features/comments/commentsSlice";
 
 function CreateComment(props) {
 
@@ -17,12 +17,12 @@ function CreateComment(props) {
     e.preventDefault();
     if (!inputComment.content) return;
     try {
-        dispatch(createComment(inputComment));
-
+       await dispatch(createComment(inputComment)).unwrap();
+       await dispatch(fetchComments(props.blogId)).unwrap();
       setInputComment({ ...inputComment, content: "" });
 
       props.onCommentSubmit && props.onCommentSubmit();
-      props.clickEditComment();
+      props.clickEditComment && props.clickEditComment();
     } catch (error) {
       console.error("Error creating comment:", error);
     }
