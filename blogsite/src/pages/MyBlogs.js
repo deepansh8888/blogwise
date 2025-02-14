@@ -3,20 +3,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { convertFileToBase64 } from '../helpers/utils';
 import { useDispatch, useSelector } from 'react-redux';
 // import {ToggleContext} from '../context/myContext';
-import { fetchUserBlogs, deleteblog } from '../features/blogs/blogsSlice';
+import { fetchUserBlogs, deleteblog, setBlogsRefresh } from '../features/blogs/blogsSlice';
 
 const MyBlogs = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const blogs = useSelector((state)=> state.blog.userBlogs);
+  const { blogsRefreshFlag } = useSelector((state)=> state.blog);
   const [draft, setDraft] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const currUserOrDraft = localStorage.getItem('user');
 
-  useEffect(() => {
-    console.log("Before Api call")
-    dispatch(fetchUserBlogs());
-  }, [isEdit, draft, dispatch]);
+  useEffect( () => {
+    (async ()=>{
+      console.log("Before Api call");
+      await dispatch(fetchUserBlogs()).unwrap();
+    })();
+  }, [isEdit, draft, dispatch, blogsRefreshFlag]);
 
   const blogView = (_id) => {
     navigate("/Viewblog", { state: { _id } });
@@ -30,8 +33,8 @@ const MyBlogs = () => {
 
   const deleteblogfunc = async (_id, e) => {
     e.stopPropagation();
-    dispatch(deleteblog(_id));
-    dispatch(fetchUserBlogs());
+    await dispatch(deleteblog(_id)).unwrap();
+    dispatch(setBlogsRefresh());
   }
 
   const handleInputChange = (event) => {

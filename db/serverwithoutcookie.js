@@ -163,7 +163,7 @@ http
                 // res.setHeader('Authorization', `Bearer ${token}`);
                 // res.end(JSON.stringify({message: "Login SuccessFul"}));
                 res.end(
-                  JSON.stringify({ message: "Login Successful", token: token })
+                  JSON.stringify({ message: "Login Successful", token: token, userProfile: checkUsername })
                 );
 
                 return;

@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../login.css';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { registerCall } from '../features/auth/authSlice';
 
 const Register = ()=> {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [regData, setRegData] = useState({
         username: '',
         email: '',
@@ -34,20 +36,7 @@ const Register = ()=> {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/register`, {
-                method: "POST",
-                body: JSON.stringify(regData),
-                headers: { 'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Registration failed');
-            }
-
-            const data = await response.json();
+            await dispatch(registerCall(regData)).unwrap();
             alert('Registration successful!');
             navigate("/login");
 

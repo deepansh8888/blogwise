@@ -10,8 +10,12 @@ const Home = () => {
   const status = useSelector((state) => state.blog.status);
   const error = useSelector((state) => state.blog.error);
 
-  useEffect(() => {
-    if (status === 'idle') dispatch(fetchAllBlogs());
+  useEffect( () => {
+    (async()=>{
+      if (status === 'idle') 
+        await dispatch(fetchAllBlogs()).unwrap();
+    })();
+
   }, [dispatch, status]);
 
   if (status === 'loading') return <div>Loading...</div>;
@@ -34,7 +38,6 @@ const Home = () => {
             </div>
           );
         })}
-        <button onClick={()=>console.log(blogs)}>click</button>
       </div>
     </div>
   );

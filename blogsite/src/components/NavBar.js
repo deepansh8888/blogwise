@@ -25,7 +25,7 @@ const NavBar = () => {
           <div id="nav-bar-btn" onClick={() => navigate('/drafts')}> Drafts </div>
           <div id="nav-bar-btn" onClick={()=> navigate('/myblogs')} > My Blogs</div>
           {/* <div id="nav-bar-btn-name" > {localStorage.getItem('user').split(" ")[0].toUpperCase()} </div> */}
-          <div id="nav-bar-btn-name" > {user?.split(" ")[0]?.toUpperCase()} </div>
+          <div id="nav-bar-btn-name" onClick={()=> navigate('/profile')} > {user?.split(" ")[0]?.toUpperCase()} </div>
           <div id="nav-bar-btn" onClick={handleLogout}> → </div>
         </div>
         {isClicked && < SubmitBlogComp setIsClicked={setIsClicked}/>}

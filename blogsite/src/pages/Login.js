@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../login.css";
-// import { ToggleContext } from "../context/myContext";
 
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../features/auth/authSlice";
+import { loginCall } from "../features/auth/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const [userinfo, setUserInfo] = useState({
+  const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
   });
@@ -31,35 +30,13 @@ const Login = () => {
   };
 
   const handleSubmit = async (event) => {
-    console.log(process.env.REACT_APP_BACKEND_URL);
     event.preventDefault();
     try {
-      if (!userinfo.username || !userinfo.password) {
+      if (!userInfo.username || !userInfo.password) {
         alert("Please fill in all fields");
         return;
       }
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/login`, {
-        method: "POST",
-        body: JSON.stringify(userinfo),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        console.log("Login attempt", data);
-
-        dispatch(
-          loginSuccess({
-            username: userinfo.username,
-            token: data.token,
-          })
-        );
-        navigate("/home");
-      } else {
-        throw new Error(data.message || "Login failed");
-      }
+      await dispatch(loginCall(userInfo)).unwrap();
     } catch (error) {
       console.error("Error during login request:", error);
       alert(error.message || "An error occurred during login");
@@ -69,23 +46,9 @@ const Login = () => {
   return (
     <div>
       <form id="loginform">
-        <input
-          type="text"
-          placeholder="Enter your username"
-          name="username"
-          onChange={handleChange}
-          value={userinfo.username}
-        />
-        <input
-          type="password"
-          placeholder="Enter your password"
-          name="password"
-          onChange={handleChange}
-          value={userinfo.password}
-        />
-        <button type="submit" onClick={handleSubmit}>
-          Login
-        </button>
+        <input type="text" placeholder="Enter your username" name="username" onChange={handleChange} value={userInfo.username} />
+        <input type="password" placeholder="Enter your password" name="password" onChange={handleChange} value={userInfo.password} />
+        <button type="submit" onClick={handleSubmit}> Login </button>
         <div id="create-account-login" onClick={() => navigate("/register")}>
           Create Account?
         </div>

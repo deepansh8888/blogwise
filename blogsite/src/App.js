@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import ViewBlog from './pages/ViewBlog';
 import ProtectedRoute from './components/ProtectedRoute';
 import Drafts from './pages/Drafts';
+import UserProfile from './pages/UserProfile';
 import NavBar from './components/NavBar';
 import { ToggleProvider } from './context/myContext';
 import MyBlogs from './pages/MyBlogs';
@@ -29,6 +30,7 @@ const App = () =>{
                 <Route path="/viewblog" element={<ViewBlog/>} />
                 <Route path="/drafts" element={<Drafts/>} />
                 <Route path='/myblogs' element={<MyBlogs/>} />
+                <Route path='/profile' element={ <UserProfile/> }  />
               </Route>
             </Route>
 

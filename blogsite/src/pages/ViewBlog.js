@@ -16,17 +16,19 @@ const ViewBlog = () => {
     }
   }, [location.state]);
 
-  useEffect(() => {
-    const fetchBlogFunc = async () => {
-      if (!blogId) return;
-
-      try {
-        dispatch(fetchsingleblog(blogId));
-      } catch (error) {
-        console.error("Error fetching blog:", error);
-      }
-    };
-    fetchBlogFunc();
+  useEffect( () => {
+        const fetchBlogFunc = async () => {
+          if (!blogId) return;
+    
+          try {
+           await dispatch(fetchsingleblog(blogId)).unwrap();
+          } catch (error) {
+            console.error("Error fetching blog:", error);
+          }
+        };
+        fetchBlogFunc();
+;
+    
   }, [blogId, dispatch]);
 
   if (!fetchedBlog) {

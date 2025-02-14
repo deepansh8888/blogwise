@@ -4,6 +4,7 @@ let initialState = {
   allBlogs: [],
   userBlogs: [],
   singleBlog: null,
+  blogsRefreshFlag: false,
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null
 }
@@ -12,6 +13,9 @@ const blogsSlice = createSlice({
     name: 'blogs',
     initialState,
     reducers: {
+      setBlogsRefresh: (state) => {
+        state.blogsRefreshFlag = !state.blogsRefreshFlag;
+      }
     },
     extraReducers: (builder) => {
       builder
@@ -152,6 +156,7 @@ export const fetchsingleblog = createAsyncThunk('blogs/getsingleblog',
 )
 
 export default blogsSlice.reducer;
+export const { setBlogsRefresh } = blogsSlice.actions;
 
 
 

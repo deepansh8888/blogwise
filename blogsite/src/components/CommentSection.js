@@ -38,7 +38,7 @@ function ViewComments(props) {
     try{
       setEditClicked(!editClicked);
       setIndexState(index);
-      dispatch(fetchComments(blogId));
+      await dispatch(fetchComments(blogId)).unwrap();
     } catch(error){
       console.log("Failed to edit comment", error);
     }

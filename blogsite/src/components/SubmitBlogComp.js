@@ -3,7 +3,7 @@ import { convertFileToBase64 } from "../helpers/utils";
 
 import { useDispatch } from "react-redux";
 import { setDraftsRefresh } from "../features/toggle/toggleSlice";
-import { createNewBlog, fetchAllBlogs } from "../features/blogs/blogsSlice";
+import { createNewBlog, fetchAllBlogs, setBlogsRefresh } from "../features/blogs/blogsSlice";
 
 const SubmitBlogComp = ({ setIsClicked }) => {
   const dispatch = useDispatch();
@@ -17,6 +17,13 @@ const SubmitBlogComp = ({ setIsClicked }) => {
 
   const submitBlog = async () => {
     try {
+      if (!blogData.title.trim()) {
+        throw new Error("Title is required");
+      }
+      if (!blogData.content.trim()) {
+        throw new Error("Content is required"); 
+      }
+
       await dispatch(createNewBlog(blogData)).unwrap();
       setBlogData({
         title: "",
@@ -24,8 +31,11 @@ const SubmitBlogComp = ({ setIsClicked }) => {
         image: "",
         imageUrl: "",
       });
+      
       dispatch(setDraftsRefresh());
-      dispatch(fetchAllBlogs());
+      dispatch(setBlogsRefresh());
+      await dispatch(fetchAllBlogs()).unwrap();
+      
       setIsClicked(false);
       alert("Blog Submitted Successfully");
     } catch (err) {
@@ -35,6 +45,12 @@ const SubmitBlogComp = ({ setIsClicked }) => {
   };
 
   const saveDraft = async () => {
+    // Don't save empty drafts
+    if (!blogData.title.trim() && !blogData.content.trim() && !blogData.image) {
+      alert("Cannot save empty draft");
+      return;
+    }
+
     localStorage.setItem(currUserOrDraftKey, JSON.stringify(blogData));
     alert("Draft Saved!");
     setBlogData({
@@ -77,7 +93,6 @@ const SubmitBlogComp = ({ setIsClicked }) => {
           <button onClick={saveDraft} id="draft-button">
             Save Draft
           </button>
-          <button onClick={() => console.log(blogData)}>cliky</button>
           <button onClick={submitBlog}> Publish </button>
           <button onClick={() => setIsClicked(false)} id="draft-button">  Close </button>
         </div>

@@ -25,13 +25,13 @@ const Drafts = () => {
 
   const publishBlog = async () => {
     try {
-      dispatch(createNewBlog(blogData));
+      await dispatch(createNewBlog(blogData)).unwrap();
 
       alert("Blog Submitted Successfully");
       localStorage.removeItem(currUserOrDraftKey);
       setIsDraftPresent(false);
 
-      dispatch(setDraftsRefresh());
+       dispatch(setDraftsRefresh());
 
       setBlogData({
         title: "",
@@ -83,7 +83,7 @@ const Drafts = () => {
     // Start reading the image as a Data URL (Base64)
     setIsEdit(false);
     setIsDraftPresent(true);
-    dispatch(setDraftsRefresh());
+     dispatch(setDraftsRefresh());
   };
 
   return (
