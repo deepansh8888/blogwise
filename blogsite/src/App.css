@@ -305,21 +305,43 @@ button:hover {
 }
 
 .profile-image:hover {
-  transform: rotate(14deg);
   box-shadow: 0px 15px 40px rgba(255, 255, 255, 0.3);
   border: 6px solid #B771E5;
+  cursor: pointer;
 }
 
 .profile-container> h1 {
   font-size: 1.8rem;
   margin-top: 10px;
   font-weight: 600;
-  transition: transform 0.4s ease;
 }
 
-.profile-container>h1:hover {
-  transform: translate(5px, 5px);
 
+.profile-image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-tooltip {
+    position: absolute;
+    background-color: #0066CC;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.profile-image-container:hover .profile-tooltip {
+    opacity: 1;
+}
+
+#profile-img-file{
+  display: none;
 }
 
 /*  Profile CSS Ends here */

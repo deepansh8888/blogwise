@@ -3,6 +3,7 @@ import authReducer from '../features/auth/authSlice'
 import toggleReducer from '../features/toggle/toggleSlice'
 import blogReducer from '../features/blogs/blogsSlice'
 import commentReducer from '../features/comments/commentsSlice'
+import userReducer from '../features/user/userSlice'
 
 export const store = configureStore({
 
@@ -11,5 +12,6 @@ export const store = configureStore({
     toggle: toggleReducer,
     blog: blogReducer,
     comment: commentReducer,
+    user: userReducer,
   }
 })

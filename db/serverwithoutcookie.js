@@ -379,6 +379,7 @@ http
             let deleteComment = await Comments.findByIdAndRemove(parsedBody.commentId);
             res.end(JSON.stringify({message: "Deleted the comment successfully at backend"}));
           } catch(error){
+            res.end(JSON.stringify(error));
             console.log("Failed to delete the comment backend api:", error);
           }
 
@@ -387,6 +388,47 @@ http
         break;
       }
 
+      case '/updateUser': {
+        let body='';
+        req.on('data', (chunk)=>{
+          body+= chunk.toString();
+        })
+        req.on('end', async()=>{
+          try{
+            const parsedBody = JSON.parse(body);
+            const updateUser = await Users.updateOne({_id: parsedBody._id}, parsedBody);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({message: 'updated user', dbResponse: updateUser}));
+          }catch(error){
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ 
+              error: error.message || 'An error occurred while updating user'
+            }));
+            console.log(error);
+          }
+        })
+        break;
+      }
+
+      case '/getUser': {
+        let body= '';
+        req.on('data', (chunk)=>{
+          body+= chunk.toString();
+        })
+
+        req.on('end', async()=>{
+          try{
+            const parsedBody =  JSON.parse(body);
+            const userInfo = await Users.findOne({_id: parsedBody._id});
+            res.end(JSON.stringify(userInfo));
+
+          }catch(error){
+            res.end(JSON.stringify({message: error}));
+            console.log(error);
+          }
+        })
+        break;
+      }
 
       default:
         try {

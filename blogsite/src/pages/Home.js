@@ -48,5 +48,6 @@ export default Home;
 
 
 // errors using redux
-// viewBlog
-// api calls interface or something? nitesh sir
+// api calls interceptors
+// redux-persist
+// radis caching

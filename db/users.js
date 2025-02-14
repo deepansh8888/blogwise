@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
         ref: 'Blog',
     }],
 
+    profileimage: {
+        type: String,
+        required: false,
+    }
+
     // sessionId: {
     //     type: String,
     //     required: true,

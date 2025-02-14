@@ -79,7 +79,7 @@ export const createNewBlog = createAsyncThunk(
         body: JSON.stringify(blogToSend),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+           "Authorization": `Bearer ${localStorage.getItem('token')}`,
         },
         credentials: 'include'
       });
@@ -90,7 +90,6 @@ export const createNewBlog = createAsyncThunk(
     }
   }
 );
-
 export const fetchUserBlogs = createAsyncThunk(
   'blogs/fetchuserblogs',
   async ( _, thunkAPI) => {
@@ -104,6 +103,8 @@ export const fetchUserBlogs = createAsyncThunk(
         },
         credentials: 'include',
       });
+      
+      if (!response.ok) throw new Error('Failed to fetch user blogs');
       return await response.json();
     }catch(error){
       return thunkAPI.rejectWithValue(error.message);

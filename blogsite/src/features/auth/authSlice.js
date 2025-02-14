@@ -4,7 +4,6 @@ const initialState = {
   user: localStorage.getItem("user") || null,
   token: localStorage.getItem("token") || null,
   isAuthenticated: false,
-  userProfileInfo: JSON.parse(localStorage.getItem("userProfileInfo")) || null
 };
 // 'state' represents the current values of the properties defined in the above initialState object
 
@@ -34,9 +33,7 @@ export const authSlice = createSlice({
   extraReducers: (builder)=>{
     builder
     .addCase(loginCall.fulfilled, (state, action)=>{
-      state.userProfileInfo = action.payload.userProfile;
       localStorage.setItem("userProfileInfo", JSON.stringify(action.payload.userProfile));
-      console.log(state.userProfileInfo);
     })
   }
 });
