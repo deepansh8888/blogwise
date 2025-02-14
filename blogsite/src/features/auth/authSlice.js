@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import UserProfile from "../../pages/UserProfile";
 
 const initialState = {
   user: localStorage.getItem("user") || null,
   token: localStorage.getItem("token") || null,
   isAuthenticated: false,
-  userProfileInfo: null
+  userProfileInfo: JSON.parse(localStorage.getItem("userProfileInfo")) || null
 };
 // 'state' represents the current values of the properties defined in the above initialState object
 
@@ -26,6 +25,7 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       localStorage.removeItem('user');
       localStorage.removeItem('token');
+      localStorage.removeItem('userProfileInfo');
     },
     restoreAuth: (state) => {
       state.isAuthenticated = !!state.token; // Set isAuthenticated to true if token exists, false otherwise
@@ -35,6 +35,7 @@ export const authSlice = createSlice({
     builder
     .addCase(loginCall.fulfilled, (state, action)=>{
       state.userProfileInfo = action.payload.userProfile;
+      localStorage.setItem("userProfileInfo", JSON.stringify(action.payload.userProfile));
       console.log(state.userProfileInfo);
     })
   }
